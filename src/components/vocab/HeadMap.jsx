@@ -1,5 +1,8 @@
 import { useMemo } from "react";
 import * as d3 from "d3";
+import { updateCellOfHeadMap } from "../../Redux/slices/vocabularySlice";
+// Redux-toolkit: using
+import { useDispatch } from "react-redux";
 
 const MARGIN = { top: 10, right: 10, bottom: 30, left: 30 };
 
@@ -10,6 +13,7 @@ type HeatmapProps = {
 };
 
 export const Heatmap = ({ width, height, data }: HeatmapProps) => {
+  const dispatch = useDispatch();
   // bounds = area inside the axis
   const boundsWidth = width - MARGIN.right - MARGIN.left;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
@@ -102,7 +106,7 @@ function compareDates(dateStr2) {
           fill={getColor(d.x, d.value) }
           rx={5}
           stroke={"white"}
-          onClick={() => handleCellClick(d)} // Add click event
+          onClick={() => dispatch(updateCellOfHeadMap(d))} // Add click event
         />
       );
     }
@@ -154,7 +158,7 @@ function compareDates(dateStr2) {
         <g
           width={boundsWidth + 50}
           height={boundsHeight + 50}
-          transform={`translate(${MARGIN.left}, ${MARGIN.top})`} 
+          transform={`translate(${MARGIN.left}, ${MARGIN.top})`}
         >
           {allRects}
           {xLabels}
