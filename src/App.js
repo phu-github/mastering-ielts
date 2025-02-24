@@ -1,8 +1,10 @@
 import "./App.css";
-import { Heatmap } from "./components/vocab/HeadMap";
-import { data } from "./components/vocab/data";
+import { Heatmap } from "./components/Vocab/HeadMap";
+import { data } from "./components/Vocab/data";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import Timer from "./Timer";
+import Credits from "./components/Credits/Credits";
 
 function App() {
   const vocab = useSelector((state) => state.vocabulary.vocab);
@@ -26,7 +28,8 @@ function App() {
       >
         <div style={{ flex: 1, marginRight: "10px" }}>
           {/* Timer Module will be placed here */}
-          Timeer us here
+          <Timer />
+          <Credits />
         </div>
         <div style={{ flex: 2, marginRight: "10px" }}>
           <Heatmap

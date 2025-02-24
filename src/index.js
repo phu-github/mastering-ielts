@@ -7,12 +7,23 @@ import reportWebVitals from "./reportWebVitals";
 import { store } from "./Redux/store";
 import { Provider } from "react-redux";
 
+// Context API
+import "./_variables.sass";
+import "./index.sass";
+import reducer, { initialState } from "./reducer";
+import ThemeProvider from "./contexts/themeProvider";
+import { StateProvider } from "./contexts/stateProvider";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <StateProvider reducer={reducer} initialState={initialState}>
+      <ThemeProvider>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </ThemeProvider>
+    </StateProvider>
   </React.StrictMode>
 );
 

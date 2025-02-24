@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import * as d3 from "d3";
 import { updateCellOfHeadMap } from "../../Redux/slices/vocabularySlice";
-import { getCurrentDay } from '../../hook/utils';
+import { getCurrentDay } from '../../hooks/utils';
 // Redux-toolkit: using
 import { useDispatch } from "react-redux";
 
