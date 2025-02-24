@@ -5,6 +5,7 @@ const initialState = {
     x: "",
     y: "",
     value: 0,
+    details: {},
   },
 };
 
