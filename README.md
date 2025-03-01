@@ -66,7 +66,7 @@ Ensure you have the following installed:
    ```
 2. Run the docker-compose file:
    ```sh
-   docker compose up -d
+   docker compose -f docker-compose.dev.yml up -d
    ```
 3. Navigate to http://localhost:8000 to view the project.
 

@@ -1,0 +1,58 @@
+services:
+  backend:
+    build: ./backend
+    command: /start_prod.sh
+    volumes:
+      - ./backend:/app
+      - ./backend/media:/app/media
+      - ./backend/static:/app/static
+    environment:
+      DOTENV_PATH: '.env'
+    networks:
+      - main
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: postgres:13.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    networks:
+      - main
+    restart: unless-stopped
+
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/prod/Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./nginx/prod/prod.conf:/etc/nginx/nginx.conf:ro
+      - ./backend/media:/usr/src/app/media
+      - ./backend/static:/usr/src/app/static
+      - ./certbot/conf:/etc/letsencrypt:ro
+      - ./certbot/www:/var/www/certbot
+    restart: unless-stopped
+    networks:
+      - main
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+
+volumes:
+  postgres_data:
+
+networks:
+  main:
+    driver: bridge

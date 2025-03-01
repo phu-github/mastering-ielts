@@ -1,0 +1,51 @@
+services:
+  backend:
+    build: ./backend
+    command: /start_dev.sh
+    volumes:
+      - ./backend:/app
+      - ./backend/media:/app/media
+      - ./backend/static:/app/static
+    ports:
+      - "5000:5000"
+    networks:
+      - main
+    environment:
+      DOTENV_PATH: ".env"
+
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:3000"
+    networks:
+      - main
+    depends_on:
+      - backend
+    environment:
+      - NODE_ENV=development
+
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/dev/Dockerfile
+    ports:
+      - "8000:80"
+    depends_on:
+      - backend
+      - frontend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./nginx/dev/dev.conf:/etc/nginx/nginx.conf:ro
+      - ./backend/media:/usr/src/app/media
+      - ./backend/static:/usr/src/app/static
+    networks:
+      - main
+
+volumes:
+  postgres_data:
+
+networks:
+  main:
+    driver: bridge
